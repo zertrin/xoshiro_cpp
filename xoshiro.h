@@ -73,7 +73,7 @@ static inline void jump_state(const int_t jump_table[4], rng_t &rng)
     int_t s3 = 0;
     for (int i = 0; i < 4; i++)
     {
-        for (int b = 0; b < 8*sizeof(int_t); b++)
+        for (int b = 0; b < 8*static_cast<int>(sizeof(int_t)); b++)
         {
             if (jump_table[i] & ((int_t)1) << b)
             {
@@ -82,10 +82,10 @@ static inline void jump_state(const int_t jump_table[4], rng_t &rng)
                 s2 ^= rng.state[2];
                 s3 ^= rng.state[3];
             }
-            rng(); 
+            rng();
         }
     }
-        
+
     rng.state[0] = s0;
     rng.state[1] = s1;
     rng.state[2] = s2;
@@ -93,7 +93,7 @@ static inline void jump_state(const int_t jump_table[4], rng_t &rng)
 }
 
 /* This is a fixed-increment version of Java 8's SplittableRandom generator
-   See http://dx.doi.org/10.1145/2714064.2660195 and 
+   See http://dx.doi.org/10.1145/2714064.2660195 and
    http://docs.oracle.com/javase/8/docs/api/java/util/SplittableRandom.html
 
    It is a very fast generator passing BigCrush, and it can be useful if
@@ -164,18 +164,18 @@ public:
                      reinterpret_cast<std::uint32_t*>(&this->state[0] + 4));
     }
 
-    Xoshiro256PP(const std::uint64_t seed)
+    explicit Xoshiro256PP(const std::uint64_t seed)
     {
         this->seed(seed);
     }
 
-    Xoshiro256PP(const std::uint64_t seed[4])
+    explicit Xoshiro256PP(const std::uint64_t seed[4])
     {
         this->seed(seed);
     }
 
     template<class Sseq>
-    Xoshiro256PP(Sseq& seq)
+    explicit Xoshiro256PP(Sseq& seq)
     {
         this->seed(seq);
     }
@@ -324,28 +324,28 @@ public:
         seq.generate(&this->state[0], &this->state[0] + 4);
     }
 
-    Xoshiro128PP(const std::uint32_t seed)
+    explicit Xoshiro128PP(const std::uint32_t seed)
     {
         this->seed(seed);
     }
 
-    Xoshiro128PP(const std::uint64_t seed)
+    explicit Xoshiro128PP(const std::uint64_t seed)
     {
         this->seed(seed);
     }
 
-    Xoshiro128PP(const std::uint32_t seed[4])
+    explicit Xoshiro128PP(const std::uint32_t seed[4])
     {
         this->seed(seed);
     }
 
-    Xoshiro128PP(const std::uint64_t seed[2])
+    explicit Xoshiro128PP(const std::uint64_t seed[2])
     {
         this->seed(seed);
     }
 
     template<class Sseq>
-    Xoshiro128PP(Sseq& seq)
+    explicit Xoshiro128PP(Sseq& seq)
     {
         this->seed(seq);
     }
